@@ -1,0 +1,211 @@
+/**
+ * StepGrid styles - Dark theme with smooth animations
+ */
+
+.step-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 1rem;
+  background: #0a0a0a;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.step-grid-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Track Row */
+.track-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 40px;
+}
+
+/* Track Label */
+.track-label {
+  min-width: 100px;
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border-radius: 4px;
+  border-left: 3px solid;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.track-label:hover {
+  background: #222;
+}
+
+.track-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #e5e5e5;
+  white-space: nowrap;
+}
+
+/* Steps Container */
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 4px;
+  flex: 1;
+}
+
+/* Step Button */
+.step {
+  aspect-ratio: 1;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+.step:hover {
+  background: #252525;
+  border-color: #444;
+  transform: scale(1.05);
+}
+
+.step:active {
+  transform: scale(0.95);
+}
+
+.step-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+
+/* Active Step */
+.step-active {
+  background: var(--track-color, #6366f1);
+  border-color: var(--track-color, #6366f1);
+}
+
+.step-active .step-inner {
+  background: rgba(255, 255, 255, calc(var(--step-velocity, 0.8) * 0.3));
+}
+
+.step-active:hover {
+  filter: brightness(1.2);
+}
+
+/* Current Playing Step */
+.step-current {
+  box-shadow: 
+    0 0 0 2px #fff,
+    0 0 20px rgba(255, 255, 255, 0.5);
+  animation: pulse 0.5s ease-in-out;
+  z-index: 10;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Downbeat Steps (every 4th) */
+.step-downbeat {
+  border-color: #444;
+}
+
+.step-measure-start {
+  border-color: #555;
+  border-width: 2px;
+}
+
+/* Step Numbers */
+.step-numbers {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 4px;
+}
+
+.track-label-spacer {
+  min-width: 100px;
+}
+
+.step-number {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.step-number-downbeat {
+  color: #999;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .step {
+    min-width: 28px;
+    min-height: 28px;
+  }
+  
+  .track-label {
+    min-width: 80px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-grid {
+    padding: 0.5rem;
+  }
+  
+  .step {
+    min-width: 24px;
+    min-height: 24px;
+  }
+  
+  .track-label {
+    min-width: 60px;
+    font-size: 0.75rem;
+    padding: 6px 8px;
+  }
+  
+  .steps-container {
+    gap: 2px;
+  }
+}
+
+/* Accessibility */
+.step:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Touch devices */
+@media (hover: none) {
+  .step:hover {
+    transform: none;
+    background: #1a1a1a;
+  }
+  
+  .step:active {
+    transform: scale(0.95);
+    background: #252525;
+  }
+}
