@@ -12,7 +12,7 @@ import './App.css'
 
 // Main sequencer interface
 function SequencerApp() {
-  const { init, isInitialized, isRunning } = useAudioEngine();
+  const { init, isInitialized, isRunning, loadSample } = useAudioEngine();
   const { setPattern, pattern } = useSequencer();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,6 +24,20 @@ function SequencerApp() {
     try {
       // Initialize audio engine
       await init();
+      
+      // Load all drum samples
+      console.log('Loading drum samples...');
+      const loadPromises = DEFAULT_DRUM_KIT.map(async (drum) => {
+        try {
+          await loadSample(drum.id, drum.url);
+          console.log(`✅ Loaded: ${drum.name}`);
+        } catch (err) {
+          console.warn(`⚠️ Failed to load ${drum.name}:`, err);
+        }
+      });
+      
+      await Promise.all(loadPromises);
+      console.log('Sample loading complete!');
       
       // Create default pattern with all 16 tracks
       const tracks = DEFAULT_DRUM_KIT.map(drum => 
@@ -41,11 +55,8 @@ function SequencerApp() {
       });
 
       setPattern(defaultPattern);
-      
-      // Load samples (they'll load in background)
-      // Note: Samples will show as "not loaded" until actual .wav files are in /public/samples/
       console.log('Pattern created with', tracks.length, 'tracks');
-      console.log('Ready to sequence! (Note: Add .wav files to /public/samples/ to hear sounds)');
+      console.log('🎵 Ready to sequence!');
       
     } catch (err) {
       console.error('Failed to initialize:', err);
@@ -105,7 +116,7 @@ function SequencerApp() {
           Steps: {pattern?.length || 0}
         </p>
         <p className="sample-note">
-          💡 Add .wav files to <code>/public/samples/</code> to hear sounds
+          💡 Click steps to program beats, then press Play!
         </p>
       </footer>
     </div>

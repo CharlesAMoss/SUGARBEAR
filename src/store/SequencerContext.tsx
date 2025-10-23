@@ -31,6 +31,7 @@ interface SequencerContextState {
   // Actions
   init: () => Promise<void>;
   resume: () => Promise<void>;
+  loadSample: (id: string, url: string) => Promise<void>;
   
   // Transport controls
   play: () => void;
@@ -127,6 +128,17 @@ export const SequencerProvider: React.FC<SequencerProviderProps> = ({
     await audioEngineRef.current?.resume();
     setAudioEngineState(audioEngineRef.current?.state || 'closed');
   }, [init]);
+  
+  /**
+   * Load an audio sample
+   */
+  const loadSample = useCallback(async (id: string, url: string) => {
+    if (!audioEngineRef.current) {
+      throw new Error('Audio engine not initialized');
+    }
+    
+    await audioEngineRef.current.loadSample(id, url);
+  }, []);
   
   /**
    * Update UI state in sync with sequencer
@@ -273,6 +285,7 @@ export const SequencerProvider: React.FC<SequencerProviderProps> = ({
     pattern,
     init,
     resume,
+    loadSample,
     play,
     pause,
     stop,

@@ -18,6 +18,7 @@ export interface UseAudioEngineReturn {
   // Actions
   init: () => Promise<void>;
   resume: () => Promise<void>;
+  loadSample: (id: string, url: string) => Promise<void>;
   setMasterVolume: (volume: GainValue) => void;
 }
 
@@ -33,6 +34,7 @@ export const useAudioEngine = (): UseAudioEngineReturn => {
     isRunning: context.audioEngineState === 'running',
     init: context.init,
     resume: context.resume,
+    loadSample: context.loadSample,
     setMasterVolume: context.setMasterVolume
   };
 };
